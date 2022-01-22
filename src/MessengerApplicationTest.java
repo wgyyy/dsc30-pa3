@@ -5,6 +5,9 @@
 
 import java.time.LocalDate;
 import org.junit.*;
+
+import javax.xml.soap.Text;
+
 import static org.junit.Assert.*;
 
 /**
@@ -25,9 +28,9 @@ public class MessengerApplicationTest {
     /*
       Global test variables. Initialize them in @Before method.
 
-    PremiumUser marina;
     MessageExchange room;     */
-    User Jack;
+    PremiumUser marina;
+    StandardUser Jack;
 
 
     /*
@@ -38,14 +41,17 @@ public class MessengerApplicationTest {
 
     /*
      * Setup
-
+     */
 
     @Before
     public void setup() {
-        marina = new PremiumUser("Marina", "Instructor");
+        /*
         room = new ChatRoom();
+         */
+        marina = new PremiumUser("Marina", "Instructor");
+        Jack = new StandardUser("Jack","Student");
     }
-     */
+
     /*
       Recap: Assert exception without message
 
@@ -85,11 +91,49 @@ public class MessengerApplicationTest {
   */
     @Test
     public void testMessageGetSender() throws OperationDeniedException {
-            Message Ja=new TextMessage(Jack,"Hello");
-            String expected="Jack";
-            String return_sender= String.valueOf(Ja.getSender());
-            System.out.println(return_sender);
+            Message Mtest=new TextMessage(Jack,"Hello");
+            User expected=Jack;
+            User return_sender= Mtest.getSender();
             assertEquals(expected,return_sender);
     }
+    @Test
+    public void testMessageGetContent() throws OperationDeniedException {
+        TextMessage Ttest=new TextMessage(Jack,"Hello");
+        String expected="Placeholder [" + date + "]: Hello";
+        String actual=Ttest.getContents();
+        assertEquals(expected,actual);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testIAE() throws OperationDeniedException{
+        Message Mtest=new TextMessage(Jack,null);
+    }
+
+    @Test(expected = OperationDeniedException.class)
+    public void testODE1() throws OperationDeniedException{
+        PhotoMessage Test1=new PhotoMessage(Jack,"Hello.jpg");
+    }
+
+    @Test(expected = OperationDeniedException.class)
+    public void testODE2() throws OperationDeniedException{
+        PhotoMessage Test1=new PhotoMessage(marina,"Hello.txt");
+    }
+
+    @Test
+    public void testExtension() throws OperationDeniedException{
+        PhotoMessage Test1=new PhotoMessage(marina,"Hello.jpeg");
+        String expected="jpeg";
+        String actual=Test1.getExtension();
+        assertEquals(expected,actual);
+        PhotoMessage Test2=new PhotoMessage(marina,"Hello.jpg");
+        expected="jpg";
+        actual=Test2.getExtension();
+        assertEquals(expected,actual);
+        PhotoMessage Test3=new PhotoMessage(marina,"Hello.gif");
+        expected="gif";
+        actual=Test3.getExtension();
+        assertEquals(expected,actual);
+    }
+
 
 }

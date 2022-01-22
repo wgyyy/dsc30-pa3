@@ -7,17 +7,20 @@ public class TextMessage extends Message {
     public TextMessage(User sender, String text)
                         throws OperationDeniedException {
         super(sender);
+        if (sender==null) {
+            throw new IllegalArgumentException();
+        }
+        if (text==null) {
+            throw new IllegalArgumentException();
+        }
         if (text.length()>500){
             throw new OperationDeniedException(EXCEED_MAX_LENGTH);
-        }
-        if (sender==null||text==null) {
-            throw new IllegalArgumentException();
         }
         contents=text;
     }
 
     public String getContents() {
-        String result=getSender().displayName()+" "+getDate().toString()+": "+contents;
+        String result=getSender().displayName()+" ["+getDate().toString()+"]: "+contents;
         return result;
     }
 

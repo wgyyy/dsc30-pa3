@@ -1,3 +1,4 @@
+import java.security.cert.Extension;
 import java.util.Objects;
 
 public class PhotoMessage extends Message {
@@ -21,19 +22,19 @@ public class PhotoMessage extends Message {
         }
         if (photoSource.length()>3){
             lastdigits=photoSource.substring(photoSource.length()-4);
-            if (!(lastdigits.contains(".jpg") || lastdigits.contains(".jpeg")
-                    || lastdigits.contains(".gif") || lastdigits.contains(".png")
-                    || lastdigits.contains(".tif") || lastdigits.contains(".tiff")
-                    || lastdigits.contains(".raw"))){
+            if (!(lastdigits.contains(".jpg") || !lastdigits.contains(".jpeg")
+                    || !lastdigits.contains(".gif") || !lastdigits.contains(".png")
+                    || !lastdigits.contains(".tif") || !lastdigits.contains(".tiff")
+                    || !lastdigits.contains(".raw"))){
                 throw new OperationDeniedException("INVALID_INPUT");
             }
         }else{
             lastdigits=photoSource.substring(photoSource.length()-3);
             if (!(lastdigits.contains(".jpg")
-                    || lastdigits.contains(".gif") ||
-                    lastdigits.contains(".png")
-                    || lastdigits.contains(".tif") ||
-                    lastdigits.contains(".raw"))){
+                    || !lastdigits.contains(".gif") ||
+                    !lastdigits.contains(".png")
+                    || !lastdigits.contains(".tif") ||
+                    !lastdigits.contains(".raw"))){
                 throw new OperationDeniedException(INVALID_INPUT);
             }
         }
@@ -46,11 +47,14 @@ public class PhotoMessage extends Message {
     }
 
     public String getExtension() {
-        for (int x=contents.length()-1;x>=0;x--){
-            if (Objects.equals(contents.charAt(x), ".")){
-                for (int y=x+1;y<contents.length();y++){
-                    extension=extension+contents.charAt(y);
-                }
+        extension="";
+        if (contents.charAt(contents.length()-4)=='.') {
+            for (int x = contents.length() - 3; x < contents.length(); x++) {
+                extension = extension + contents.charAt(x);
+            }
+        }else if (contents.charAt(contents.length()-5)=='.'){
+            for (int x = contents.length() - 4; x < contents.length(); x++) {
+                extension = extension + contents.charAt(x);
             }
         }
         return extension;

@@ -13,6 +13,7 @@ public abstract class Message {
 
     public Message(User sender) {
         this.date = LocalDate.now();
+        this.sender=sender;
         if (sender==null){
             throw new IllegalArgumentException();
         }
