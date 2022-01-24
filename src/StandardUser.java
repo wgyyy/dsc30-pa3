@@ -9,17 +9,38 @@ public class StandardUser extends User {
 
     public StandardUser(String username, String bio) {
         super(username,bio);
-        /* TODO */
     }
 
     public String fetchMessage(MessageExchange me) {
-        /* TODO */
-        return null;
+        if (me==null) {
+            throw new IllegalArgumentException();
+        }else if (!me.getUsers().contains(this)) {
+            throw new IllegalArgumentException();
+        }
+        String result="";
+        ArrayList<Message> log_list=me.getLog(this);
+        if (log_list.size()<100){
+            for (int x=0;x<log_list.size();x++){
+                if (log_list.get(x).getClass()==TextMessage.class) {
+                    result = result + log_list.get(x).getContents()+"\n";
+                }else{
+                    result = result + FETCH_DENIED_MSG+"\n";
+                }
+            }
+        }else{
+            for (int x=0;x<100;x++){
+                if (log_list.get(x).getClass()==TextMessage.class) {
+                    result = result + log_list.get(x).getContents()+"\n";
+                }else{
+                    result = result + FETCH_DENIED_MSG+"\n";
+                }
+            }
+        }
+        return result;
     }
 
     public String displayName() {
-        /* TODO */
-        return "Placeholder";  // placeholder for checkpoint test.
-                               // replace it with your own after checkpoint submission.
+        String name=this.username;
+        return name;
     }
 }

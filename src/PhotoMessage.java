@@ -21,20 +21,20 @@ public class PhotoMessage extends Message {
             throw new OperationDeniedException();
         }
         if (photoSource.length()>3){
-            lastdigits=photoSource.substring(photoSource.length()-4);
-            if (!(lastdigits.contains(".jpg") || !lastdigits.contains(".jpeg")
-                    || !lastdigits.contains(".gif") || !lastdigits.contains(".png")
-                    || !lastdigits.contains(".tif") || !lastdigits.contains(".tiff")
-                    || !lastdigits.contains(".raw"))){
-                throw new OperationDeniedException("INVALID_INPUT");
+            lastdigits=photoSource.substring(photoSource.length()-5);
+            if (!(lastdigits.contains(".jpg") || lastdigits.contains(".jpeg")
+                    || lastdigits.contains(".gif") || lastdigits.contains(".png")
+                    || lastdigits.contains(".tif") || lastdigits.contains(".tiff")
+                    || lastdigits.contains(".raw"))){
+                throw new OperationDeniedException(INVALID_INPUT);
             }
         }else{
             lastdigits=photoSource.substring(photoSource.length()-3);
             if (!(lastdigits.contains(".jpg")
-                    || !lastdigits.contains(".gif") ||
-                    !lastdigits.contains(".png")
-                    || !lastdigits.contains(".tif") ||
-                    !lastdigits.contains(".raw"))){
+                    || lastdigits.contains(".gif") ||
+                    lastdigits.contains(".png")
+                    || lastdigits.contains(".tif") ||
+                    lastdigits.contains(".raw"))){
                 throw new OperationDeniedException(INVALID_INPUT);
             }
         }
